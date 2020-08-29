@@ -1,0 +1,1 @@
+{"name":"templateexample","template":[{"name":"name : Название","sku":"kind_id : ID","qty":"amount : Количество","price":"price : Цена"},"10%",{"qty":"merge","price":"modify","change":""},[{"column":"folder : Категория","equality":"","value":"qweqwe","modifier":"20%"}]]}
