@@ -74,12 +74,12 @@ class Save_Product{
             return false;
         }
 
-        $product->set_stock_quantity($this->product_data['qty']);
-        $product->set_price($this->product_data['price']);
-        $product->save();
+        // $product->set_stock_quantity($this->product_data['qty']);
+        // $product->set_price($this->product_data['price']);
+        // $product->save();
 
         $this->log_message .= 'quantity updated with value ' . $this->product_data['qty'] . ' and price updated with value ' . $this->product_data['price'];
-
+        return $this->log_message; 
     }
 }
 

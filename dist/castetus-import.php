@@ -50,13 +50,15 @@ function castetus_import_style() {
 }
 add_action('admin_print_styles', 'castetus_import_style');
 
+require_once 'ajax-api.php';
+
+
 foreach ( glob( plugin_dir_path( __FILE__ )."classes/*.php" ) as $file ){
     require_once $file;
 }
 
 function product_import(){ 
     require_once 'markup.php';
-    require_once 'ajax-api.php';
  }
 
  

@@ -31,15 +31,16 @@ function send_labels(){
     wp_die();
 }
 
-add_action ('wp_ajax_get_data', 'get_data');
+add_action ('wp_ajax_save_data', 'save_data');
 
-function get_data(){
+function save_data(){
 
-    $data = $_POST('data');
+    $data = $_POST['data'];
 
-    $product_rows = json_decode($data);
+    $product_rows = json_decode(stripslashes($data));
    
     $log = '';
+    $message = [];
      
     foreach ($product_rows as $product_row){
 
@@ -47,16 +48,21 @@ function get_data(){
         $save_product = new Save_Product($product_row);
         $save_product->save($product_row);
 
-        $log .= $save_product->log_message . (PHP__OL);
+        $log .= $save_product->log_message . (PHP_EOL);
+
+        $message[] = $save_product->log_message;
 
     }
 
     $new_log = new Import_Log();
     $new_log->log_write($log);
 
-    $file_name = $new_log->file;
+    $file_url = plugin_dir_url(__FILE__) . 'logs/' . basename($new_log->file);
 
-    echo $file_name;
+    $send_data['file'] = $file_url;
+    $send_data['message'] = $message;
+
+    echo json_encode($send_data);
 
     wp_die();
  
