@@ -12,7 +12,7 @@
                         </h2>
                         <v-select 
                             :items="templates"
-                            label="Select template..." 
+                            :label="labels.selectTemplate" 
                             v-model="selectedTemplate">
                         </v-select>
                     </v-col>
@@ -21,7 +21,7 @@
                             {{labels.saveTemplate}}
                         </h2>
                         <v-text-field 
-                            placeholder="Template Name"
+                            :placeholder="labels.templateName"
                             v-model="templateName">
                         </v-text-field>
                     </v-col>
@@ -60,18 +60,15 @@
 export default {
   data () {
     return {
-        labels: {
-            heading: 'Templates Control',
-            controlTemplates: 'Templates',
-            saveTemplate: 'Save Template',
-            saveTemplateButton: 'save',
-            closePopupButton: 'close',
-            loadTemplateButton: 'load',
-            removeTemplateButton: 'remove'
-        },
         templateName: '',
         selectedTemplate: '',
         templates: null,
+    }
+  },
+  props: {
+    labels: {
+      type: Object,
+      default: {},
     }
   },
   created () {
@@ -93,6 +90,7 @@ export default {
       this.$emit('load', this.selectedTemplate);
     },
     removeTemplate(){
+      console.log(this.selectedTemplate);
       this.$root.fetchData('castetus_remove_template', this.selectedTemplate)
       .then((result) => {
         this.loadTemplatesList();
@@ -102,3 +100,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  h2{
+    color: red;
+  }
+</style>

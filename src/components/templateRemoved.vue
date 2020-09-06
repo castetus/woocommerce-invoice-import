@@ -1,17 +1,17 @@
 <template>
         <v-card>
-        <v-card-title class="headline success lighten-2">
-            {{heading}}
+        <v-card-title class="headline success text-center">
+            {{labels.templateRemovedHeading}}
         </v-card-title>
         <v-spacer></v-spacer>
         <v-card-text>
-            Template {{templateName}} removed!
+            {{templateName}} {{labels.templateRemovedMessage}}
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
         <v-spacer></v-spacer>
           <v-btn @click="$emit('hide')">
-            Close
+            {{labels.closePopupButton}}
           </v-btn>
         </v-card-actions>
     </v-card>
@@ -19,11 +19,15 @@
 
 <script>
 export default {
-  data () {
-    return {
-      heading: 'Template Removed',
+  props: {
+    labels: {
+      type: Object,
+      default: {},
+    },
+    templateName: {
+      type: String,
+      default: ''
     }
-  },
-  props: ['templateName']
+  }
 }
 </script>

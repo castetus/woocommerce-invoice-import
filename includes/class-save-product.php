@@ -34,14 +34,14 @@ class Save_Product{
         $sku = $data['sku'];
 
         if (!isset($sku) || $sku === ''){
-             $this->log_message .= 'Unable to identificate product - empty SKU';
+             $this->log_message .= __('Unable to identificate product - empty SKU', 'woo-qty-price-import');
              return false;
         }
 
         $product_id = wc_get_product_id_by_sku( $sku );
 
         if (!$product_id ) {
-            $this->log_message .= 'Unable to identificate product - uncorrect SKU';
+            $this->log_message .= __('Unable to identificate product - uncorrect SKU', 'woo-qty-price-import');
             return false;
         }
 
@@ -78,7 +78,7 @@ class Save_Product{
         // $product->set_price($this->product_data['price']);
         // $product->save();
 
-        $this->log_message .= 'quantity updated with value ' . $this->product_data['qty'] . ' and price updated with value ' . $this->product_data['price'];
+        $this->log_message .= __('quantity updated with value ','woo-qty-price-import') . $this->product_data['qty'] . __(' and price updated with value ', 'woo-qty-price-import') . $this->product_data['price'];
         return $this->log_message; 
     }
 }

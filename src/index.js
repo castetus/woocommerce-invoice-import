@@ -5,9 +5,7 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import App from './App.vue'
 
-export const ajaxurl = 'http://cd57456.tmweb.ru/wp-admin/admin-ajax.php';
-
-let app = new Vue({
+let importPlugin = new Vue({
     vuetify,
     components: {
         App

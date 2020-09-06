@@ -1,9 +1,10 @@
 <template>
     <v-app>
-        <h1>Woocommerce Import</h1>
+        <v-container d-flex>
+            <h1>Woocommerce Quantity & Price Import</h1>
+        </v-container>
             <v-container d-flex>
                 <v-col cols="6">
-                    <v-btn @click="showData">show</v-btn>
                     <v-file-input
                         v-model="file" 
                         :label="labels.uploadLabel" 
@@ -17,23 +18,31 @@
                     </v-btn>
                 </v-col>
 
-                <v-col cols=4>
+                <v-col cols=2>
                     <v-btn outlined
-                    @click="showPopup('templatesControl')"
-                    color="success">
-                    {{labels.templatesButton}}
-                </v-btn>
-                    
+                        @click="showPopup('templatesControl')"
+                        color="success">
+                        {{labels.templatesButton}}
+                    </v-btn>
+                </v-col>
+                <v-col cols=2>
+                    <v-btn outlined
+                        @click="showPopup('logsView')"
+                        color="success">
+                        {{labels.logsViewButton}}
+                    </v-btn>
                 </v-col>
 
                 <v-dialog 
                     v-model="popup"
                     max-width="600">
-                    <component 
+                    <component
+                        :labels="labels.templatesLabels" 
                         :is="popupContent" 
                         v-bind="property"
                         :logName="log.file"
                         :log="log.message"
+                        :logList="logList"
                         @removed="showPopup('templateRemoved')"
                         @hide="hidePopup" 
                         @save="saveTemplate" 
@@ -41,37 +50,59 @@
                     </component>
                 </v-dialog>
             </v-container>
-            <v-container v-if="headers" d-flex>
-                <v-col v-for="select in selectInputsValues" cols="3">
+            <v-container v-if="headers">
+                <v-row>
+                    <v-col cols="12">
+                        <p class="font-italic">
+                            {{labels.headersInstruction}}
+                        </p>
+                    </v-col>
+                </v-row>
+                <v-col v-for="select in labels.selectInputsValues" :key="select.label" cols="3">
                     <v-select 
-                    v-model="selectedHeaders[select.value]"
-                    :items="headers"
-                    :label="select.label"
-                    bottom
-                    autocomplete>
+                        v-model="selectedHeaders[select.value]"
+                        :items="headers"
+                        :label="select.label"
+                        bottom
+                        autocomplete>
                     </v-select>
                 </v-col>
             </v-container>
-            <v-container d-flex v-if="headers">
+            <v-container v-if="selectedHeaders.qty || selectedHeaders.price">
+                <v-col cols="12">
+                    <p class="font-italic">
+                        {{labels.rulesInstruction}}
+                    </p>
+                </v-col>
                 <v-col cols="3" v-if="selectedHeaders.qty">
                     {{labels.quantityFilter}}
                     <v-radio-group v-model="mode.qty">
-                        <v-radio v-for="item in qtyModeValues" :label="item.label" :value="item.value"></v-radio>
+                        <v-radio 
+                            v-for="item in labels.qtyModeValues" 
+                            :label="item.label" 
+                            :value="item.value" 
+                            :key="item.label">
+                        </v-radio>
                     </v-radio-group>
                 </v-col>
                 <v-col cols="3" v-if="selectedHeaders.price">
                     {{labels.priceFilter}}
                     <v-radio-group v-model="mode.price">
-                        <v-radio v-for="item in priceModeValues" :label="item.label" :value="item.value"></v-radio>
+                        <v-radio v-for="item in labels.priceModeValues" :label="item.label" :value="item.value" :key="item.label"></v-radio>
                     </v-radio-group>
                 </v-col>
-                <v-col cols="4" v-if="mode.price === 'modify'">
+                <v-col cols="3" max-width="24%" v-if="mode.price === 'modify'">
                     {{labels.modifierFilter}}
                     <v-text-field v-model="priceModifier" :rules="[rules.required, rules.regexp]" :placeholder="labels.modifierPlaceholder"></v-text-field>
+                </v-col>
+                <v-col cols="3" v-if="mode.price === 'modify'">
+                        <p class="font-italic">
+                            {{labels.customRulesInstruction}}
+                        </p>
                         <v-btn class="align-self-end" color="success" @click="addCustomRule">{{labels.addCustomRuleButton}}</v-btn>
-                    </v-col>
+                </v-col>
             </v-container>
-                    <v-container d-flex v-for="(rule, n) in customRules">
+                    <v-container d-flex v-for="(rule, n) in customRules" :key="rule.id" >
                         <v-col cols=4>
                             <v-select :items="headers" v-model="customRules[n].column" :label="labels.customRuleSelectLabel" ></v-select>
                         </v-col>
@@ -98,14 +129,27 @@
                 <v-container d-flex justify-center>
                     <v-data-table v-if="showTable"
                     width="100%"
-                    :headers="tableHeaders"
+                    :headers="labels.tableHeaders"
                     :items="importList"
                     :items-per-page="10"
                     class="elevation-1"
                   ></v-data-table>
                 </v-container>
-            <v-container d-flex justify-center>
-                <v-btn @click="saveData" large color="success" v-if="showTable">{{labels.saveToDatabaseButton}}</v-btn>
+            <v-container justify-center>
+                <v-btn 
+                    @click="saveData" 
+                    :disabled="dataSaved" 
+                    large 
+                    color="success" 
+                    v-if="showTable">
+                    {{labels.saveToDatabaseButton}}
+                </v-btn>
+                <v-btn 
+                    class="float-right"
+                    v-if="dataSaved"
+                    @click="startNewImport"
+                    >{{labels.newImportButton}}
+                </v-btn>
             </v-container>
         </v-app>
 </template>
@@ -113,17 +157,18 @@
 <script>
 
 import Papa from 'papaparse'
-import ajaxurl from './index.js'
 import templateSaved from './components/templateSaved.vue'
 import templatesControl from './components/templatesControl.vue'
 import templateRemoved from './components/templateRemoved.vue'
 import afterDataSaved from './components/afterDataSaved.vue'
+import logsView from './components/logsView.vue'
 export default {
     components: {
     templateSaved,
     templateRemoved,
     templatesControl,
     afterDataSaved,
+    logsView,
   },
   data() {
       return{
@@ -138,22 +183,9 @@ export default {
             qty: '',
             price: '',
         },
-    selectInputsValues: [
-        {label: 'Name', value: 'name'},
-        {label: 'SKU', value: 'sku'},
-        {label: 'Quantity', value: 'qty'},
-        {label: 'Price', value: 'price'},
-    ],
-    qtyModeValues: [
-            {value: 'not', label: 'Do not import'},
-            {value: 'native', label: 'Import from file'},
-            {value: 'merge', label: 'Merge quantity'},
-        ],
-    priceModeValues: [
-            {value: 'not', label: 'Do not import'},
-            {value: 'native', label: 'Import from file'},
-            {value: 'modify', label: 'Modify price'},
-        ],
+    selectInputsValues: [],
+    qtyModeValues: [],
+    priceModeValues: [],
     priceModifier: '',
     rules: {
         required: value => !!value || 'Required',
@@ -171,26 +203,30 @@ export default {
     columnNumbers: {},
     importList: [],
     showTable: false,
-    tableHeaders: [
-        { text: 'Product name', value: 'name' },
-        { text: 'Product SKU', value: 'sku' },
-        { text: 'Product quantity', value: 'qty' },
-        { text: 'Product price', value: 'price' },
-    ],
+    tableHeaders: [],
     popup: false,
     content: null,
     template: null,
-    // logName: '',
     log: {
         file: '',
         message: [],
     },
-      }
+    dataSaved: false,
+    logList: [],
+    }
   },
 
 created() {
     this.$root.fetchData('send_labels', '')
-    .then((data) => this.labels = data.data);
+    .then((data) => this.labels = data.data)
+    .catch(error => console.log(error));
+
+    this.$root.fetchData('loglist', '')
+    .then((data) => {
+        this.logList = data.data
+        // console.log(data.data)
+    })
+    .catch(error => console.log(error));
 },
 
 computed: {
@@ -225,15 +261,19 @@ methods: {
             }
                 let parser = Papa.parse(this.file, {
                 complete: (results) => {
-
                     this.headers = results.data.shift();
                     this.items = results.data;
+                    
                 }
             });
-            // this.showData();
+           
         },
         addCustomRule() {
+
+            let id = this.customRules.length + 1;
+
             let rule = {
+                id: id,
                 column: '',
                 equality: '',
                 value: '',
@@ -249,6 +289,20 @@ methods: {
             this.onUpload();
 
             let rows = this.items.slice();
+
+            // find & delete empty rows
+            for (let i = 0; i < rows.length; i++){
+                let row = rows[i];
+                for (let e = 0; e < row.length; e++){
+                    let el = row[e];
+                    if (el === ''){
+                        row.splice(e, 1);
+                    }
+                }
+                if (row.length == 0){
+                    rows.splice(i, 1);
+                }
+            }
 
             this.setColumnNumbers(); 
 
@@ -282,9 +336,11 @@ methods: {
             if (this.importList.length > 0){
                 this.importList = [];
             }
-            rows = rows.map(row =>
-                this.addToList(row)
+            rows = rows.map(row => {
+                    this.addToList(row);
+                }
             );
+            
 
         },
         setColumnNumbers() {
@@ -389,15 +445,13 @@ methods: {
             this.$root.fetchData('save_data', data)
             .then(this.hidePopup())
             .then((data) => this.log = data.data)
-            // .then((data) => this.log = data.data['message'])
-            .then(this.showPopup('afterDataSaved'));
-
+            .then(this.showPopup('afterDataSaved'))
+            .then(this.dataSaved = true)
+            .catch(error => console.log(error));
         },
-        showData(){
-            console.log(this.mode);
-
+        startNewImport(){
+            document.location.reload();
         }
-
     }
 }
 </script>

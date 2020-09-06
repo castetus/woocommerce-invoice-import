@@ -9,7 +9,7 @@ module.exports = {
     mode: 'development',
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'admin/js'),
     filename: 'bundle.js'
   },
   resolve: {
@@ -21,7 +21,14 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
       },
      {
       test: /\.s(c|a)ss$/,
@@ -50,7 +57,7 @@ module.exports = {
    plugins: [
     new VueLoaderPlugin(),  // Array of plugins to apply to build chunk
     new HtmlWebpackPlugin({
-        template: __dirname + "/index.html",
+        template: __dirname + "/src/index.html",
         inject: 'body'
     }),
 ],

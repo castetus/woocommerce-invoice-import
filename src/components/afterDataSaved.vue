@@ -1,30 +1,36 @@
 <template>
         <v-card>
         <v-card-title class="headline success">
-            {{heading}}
+            {{labels.dataSavedHeading}}
         </v-card-title>
         <v-spacer></v-spacer>
-        <v-card-text>
-            {{text}}
-            <v-divider></v-divider>
-            <a :href="`${logName}`"
-                :download=true>
-                Download Log File
+        <v-card-text class="mt-5">
+            <a class="float-right"
+              :href="`${logName}`"
+              download>
+              {{labels.dataSavedLink}}
             </a>
-            <v-divider></v-divider>
-            <v-simple-table>
-                <tbody>
-                    <tr v-for="item in log" :key="item">
-                        <td>{{item}}</td>
-                    </tr>
-                </tbody>
-            </v-simple-table>
+            <v-btn 
+              color="success"
+              @click="expand = !expand"
+              >{{labels.logViewButton}}
+            </v-btn>
+            <v-expand-transition>
+              <v-list>
+                <v-list-item 
+                  v-show="expand"
+                  v-for="item in log" 
+                  :key="item">
+                  {{item}}
+                </v-list-item>
+              </v-list>
+            </v-expand-transition>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
         <v-spacer></v-spacer>
           <v-btn @click="$emit('hide')">
-            Close
+            {{labels.closePopupButton}}
           </v-btn>
         </v-card-actions>
     </v-card>
@@ -32,15 +38,24 @@
 
 <script>
 export default {
-  data () {
-    return {
-      heading: 'Data Saved',
-      text: 'All data successfully saved to database!',
+  data(){
+    return{
+      expand: false
     }
   },
-  props: ['logName', 'log'],
-  methods: {
-
+    props: {
+    labels: {
+      type: Object,
+      default: {},
+    },
+    logName: {
+      type: String,
+      default: ''
+    },
+    log: {
+      type: Array,
+      default: []
+    }
   }
 }
 </script>

@@ -6,6 +6,8 @@ Description: ///
 Version: 1.0
 Author: Castetus
 Author URI: https://castetus.ru
+Text Domain: woo-qty-price-import
+Domain Path: /languages
 */
 ?>
 <?php
@@ -34,31 +36,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'admin_menu', 'register_woo_import_page' );
 
 function register_woo_import_page(){
-	add_menu_page( 'Woo Product Import', 'Woo Product Import', 'edit_others_posts', '/castetus-import/castetus-import.php', 'product_import', plugins_url( '' ), 13 ); 
+	add_menu_page( 'Woo Product Import', 'Woo Product Import', 'edit_others_posts', 'woo-qty-price-import.php', 'product_import', plugins_url( '' ), 13 ); 
 }
-function castetus_import_script() {
 
-    wp_enqueue_script( 'bundle', plugin_dir_url( __FILE__ ) . 'assets/js/bundle.js', [], null, true );
-    
-}
-add_action( 'admin_enqueue_scripts', 'castetus_import_script' );
+$path = dirname( __FILE__, 2 ) . '/woocommerce/vendor/autoload.php';
 
-function castetus_import_style() {
-    wp_enqueue_style('mdi', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
-    wp_enqueue_style('vuetify-style', plugin_dir_url( __FILE__ ) . 'assets/css/vuetify-v2.3.8.min.css');
-    wp_enqueue_style('castetus-import-style', plugin_dir_url( __FILE__ ) . 'assets/css/custom-styles.css');
-}
-add_action('admin_print_styles', 'castetus_import_style');
+require $path;
+ 
+// use Automattic\WooCommerce\Client;
+ 
+// $woocommerce = new Client(
+//     'http://example.com', 
+//     'ck_c37a7173b2532e777f2613b8307c70f7f3b3dee0', 
+//     'cs_5a3cbfb21bb98ce469fe99bc31adf423931f6617',
+//     [
+//         'wp_api' => true,
+//         'version' => 'wc/v2',
+//     ]
+// );
+ 
+// // Вывести все товары
+// print_r($woocommerce->get('products'));
 
-require_once 'ajax-api.php';
 
-
-foreach ( glob( plugin_dir_path( __FILE__ )."classes/*.php" ) as $file ){
+foreach ( glob( plugin_dir_path( __FILE__ )."includes/*.php" ) as $file ){
     require_once $file;
 }
 
 function product_import(){ 
-    require_once 'markup.php';
+
+    require_once 'admin/partials/markup.php';
+    wp_enqueue_script( 'bundle', plugin_dir_url( __FILE__ ) . 'admin/js/bundle.js', [], null, true );
+    wp_enqueue_style('mdi', 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css');
+    wp_enqueue_style('vuetify-style', plugin_dir_url( __FILE__ ) . 'admin/css/vuetify-v2.3.8.min.css');
+    wp_enqueue_style('custom-styles', plugin_dir_url( __FILE__ ) . 'admin/css/custom-styles.css');
+    
  }
 
  

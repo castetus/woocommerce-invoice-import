@@ -1,0 +1,239 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: woo-wty-price-import 1.0\n"
+"POT-Creation-Date: 2020-09-06 10:45+0300\n"
+"PO-Revision-Date: 2020-09-06 10:46+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: woo-qty-price-import.php\n"
+"X-Poedit-SearchPath-1: includes\n"
+
+#: includes/ajax-api.php:10
+msgid ""
+"Select the columns that contain name (optional), sku (required), quantity "
+"and price of your products"
+msgstr ""
+"Выберите  столбцы вашего файла, в которых содержатся название товара "
+"(необязательно), артикул (обязательно), количество и/или цена ваших товаров"
+
+#: includes/ajax-api.php:11
+msgid ""
+"Select import options. To merging quantities in stock and in file, select "
+"\"Merge price\". To modify prices, select \"Modify price\"."
+msgstr ""
+"Выберите опции импорта. Для сложения количества товаров на складе и в файле, "
+"выберите \"Добавить на склад\". Для изменения цен, выберите \"Изменить цены"
+"\"."
+
+#: includes/ajax-api.php:12
+msgid ""
+"You can add your custom price modifying rules for individual products or "
+"products groups by your criteria. Add new custom rule, then select the "
+"column and value of condition. Custom rules has priority over common price "
+"modifier."
+msgstr ""
+"Вы можете добавить дополнительные правила изменения цен для отдельных "
+"товаров или групп товаров по любому условию. Добавьте новое правило, потом "
+"выберите столбец файла и значение, по которому хотите выбрать товары. Свои "
+"правила имеют приоритет над общим модификатором цен "
+
+#: includes/ajax-api.php:13
+msgid "Logs"
+msgstr "Логи"
+
+#: includes/ajax-api.php:14 includes/ajax-api.php:30
+msgid "Templates"
+msgstr "Шаблоны"
+
+#: includes/ajax-api.php:15
+msgid "Select file..."
+msgstr "Выберите файл..."
+
+#: includes/ajax-api.php:16
+msgid "Upload file"
+msgstr "Загрузить"
+
+#: includes/ajax-api.php:17
+msgid "Add Custom Rule"
+msgstr "Добавить свое правило"
+
+#: includes/ajax-api.php:18
+msgid "Save to Database"
+msgstr "Сохранить в базу данных"
+
+#: includes/ajax-api.php:19
+msgid "Apply Changes"
+msgstr "Применить правила"
+
+#: includes/ajax-api.php:20 includes/ajax-api.php:51
+msgid "Quantity"
+msgstr "Количество"
+
+#: includes/ajax-api.php:21 includes/ajax-api.php:52
+msgid "Price"
+msgstr "Цена"
+
+#: includes/ajax-api.php:22
+msgid "Price Modifier"
+msgstr "Модификатор цен"
+
+#: includes/ajax-api.php:23
+msgid "Number or percent"
+msgstr "Число или процент"
+
+#: includes/ajax-api.php:24
+msgid "Select column"
+msgstr "Выберите столбец"
+
+#: includes/ajax-api.php:25
+msgid "Value"
+msgstr "Значение"
+
+#: includes/ajax-api.php:26
+msgid "Price modifier"
+msgstr "Модификатор цены"
+
+#: includes/ajax-api.php:27
+msgid "New Import"
+msgstr "Новый импорт"
+
+#: includes/ajax-api.php:29
+msgid "Templates Control"
+msgstr "Управление шаблонами"
+
+#: includes/ajax-api.php:31
+msgid "Save Template"
+msgstr "Сохранить шаблон"
+
+#: includes/ajax-api.php:32
+msgid "save"
+msgstr "сохранить"
+
+#: includes/ajax-api.php:33
+msgid "close"
+msgstr "закрыть"
+
+#: includes/ajax-api.php:34
+msgid "load"
+msgstr "загрузить"
+
+#: includes/ajax-api.php:35
+msgid "remove"
+msgstr "удалить"
+
+#: includes/ajax-api.php:36
+msgid "Select template..."
+msgstr "Выберите шаблон..."
+
+#: includes/ajax-api.php:37
+msgid "Template name"
+msgstr "Имя шаблона"
+
+#: includes/ajax-api.php:38
+msgid "Template removed"
+msgstr "Шаблон удален"
+
+#: includes/ajax-api.php:39
+msgid "Template saved"
+msgstr "Шаблон сохранен"
+
+#: includes/ajax-api.php:40
+msgid " saved succesfully!"
+msgstr " сохранен успешно!"
+
+#: includes/ajax-api.php:41
+msgid " removed!"
+msgstr " удален!"
+
+#: includes/ajax-api.php:42
+msgid "Data saved to database"
+msgstr "Данные сохранены в базу"
+
+#: includes/ajax-api.php:43
+msgid "Download log file"
+msgstr "Загрузить лог"
+
+#: includes/ajax-api.php:44
+#, fuzzy
+#| msgid "Upload file"
+msgid "Log files"
+msgstr "Загрузить"
+
+#: includes/ajax-api.php:45
+msgid "Show log"
+msgstr "Показать лог"
+
+#: includes/ajax-api.php:46
+msgid "Show files"
+msgstr "Показать файлы"
+
+#: includes/ajax-api.php:49
+msgid "Name"
+msgstr "Название"
+
+#: includes/ajax-api.php:50
+msgid "SKU"
+msgstr "Артикул"
+
+#: includes/ajax-api.php:55
+msgid "Product name"
+msgstr "Название товара"
+
+#: includes/ajax-api.php:56
+msgid "Product SKU"
+msgstr "Артикул товара"
+
+#: includes/ajax-api.php:57
+msgid "Product quantity"
+msgstr "Количество товара"
+
+#: includes/ajax-api.php:58
+msgid "Product price"
+msgstr "Цена товара"
+
+#: includes/ajax-api.php:61 includes/ajax-api.php:66
+msgid "Do not import"
+msgstr "Не импортировать"
+
+#: includes/ajax-api.php:62 includes/ajax-api.php:67
+msgid "Import from file"
+msgstr "Импортировать как в файле"
+
+#: includes/ajax-api.php:63
+msgid "Merge quantity"
+msgstr "Добавить к складу"
+
+#: includes/ajax-api.php:68
+msgid "Modify price"
+msgstr "Изменить цены"
+
+#: includes/class-save-product.php:37
+msgid "Unable to identificate product - empty SKU"
+msgstr "Невозможно идентифицировать товар - пустой артикул"
+
+#: includes/class-save-product.php:44
+msgid "Unable to identificate product - uncorrect SKU"
+msgstr "Невозможно идентифицировать товар - некорректный артикул"
+
+#: includes/class-save-product.php:81
+msgid "quantity updated with value "
+msgstr "количество обновлено со значением "
+
+#: includes/class-save-product.php:81
+msgid " and price updated with value "
+msgstr " цена обновлена со значением "
+
+#~ msgid "TEst_label"
+#~ msgstr "Тест_лейбл"
+
+#~ msgid "There's not any saved templates"
+#~ msgstr "Пока нет сохраненных шаблонов"

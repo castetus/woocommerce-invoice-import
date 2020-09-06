@@ -1,0 +1,12 @@
+input[readonly]{
+    background: none;
+}
+input[type=text], input[type=text]:focus{
+    border: none;
+    background: none;
+    outline: none;
+    box-shadow: none;
+}
+.v-data-table{
+    width: 100%;
+}
